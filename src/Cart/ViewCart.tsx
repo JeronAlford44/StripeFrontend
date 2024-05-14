@@ -8,7 +8,8 @@ export default function ViewCart() {
 
   const handlePay = () => {
     // Implement payment functionality here
-    navigate('/checkout') // Redirect to checkout page after payment
+    Cart?.setCheckoutInitiated(true)
+    navigate('/test') // Redirect to checkout page after payment
   }
 
   return (
@@ -26,14 +27,14 @@ export default function ViewCart() {
         {Cart?.cartItems.map((item, index) => (
           <div key={index} className="bg-gray-900 p-4 rounded-md">
             <img
-              src={item.image}
-              alt={item.name}
+              src={item.images[0]}
+              alt={item.id}
               className="w-24 h-24 object-cover rounded-md mb-2"
             />
-            <div className="text-xl text-white font-bold mb-1">{item.name}</div>
+            <div className="text-xl text-white font-bold mb-1">{item.id}</div>
             <div className="text-gray-300 mb-2">{item.description}</div>
-            <div className="text-gray-400 mb-2">Price: ${item.price}</div>
-            <div className="text-gray-400">Quantity: {item.count}</div>
+            <div className="text-gray-400 mb-2">Price: ${item.default_price}</div>
+            <div className="text-gray-400">Quantity: {item.metadata.count}</div>
           </div>
         ))}
       </div>

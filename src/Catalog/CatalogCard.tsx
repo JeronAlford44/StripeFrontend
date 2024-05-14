@@ -1,16 +1,11 @@
 import { useContext, useState } from 'react'
 
 import { useCart } from '../Providers/CartProvider'
+import { Product } from './items'
 
-export interface Item {
-  name: string
-  price: string
-  description: string
-  image: string
-  count: number
-}
 
-export default function CatalogCard({ item }: { item: Item }) {
+
+export default function CatalogCard({ item }: { item: Product }) {
   
   const [quantity, setQuantity] = useState(0)
   const Cart = useCart()
@@ -29,10 +24,10 @@ setQuantity(num => Math.max(0, num - 1))
   return (
     <div>
       <section className="bg-gray-900 rounded-lg shadow-md p-4 transition duration-300 transform hover:scale-105">
-        <img className="w-64 h-48 object-cover rounded-lg mb-2" src={item.image} alt={item.name} />
+        <img className="w-64 h-48 object-cover rounded-lg mb-2" src={item.images[0]} alt={item.id} />
         <div className="flex justify-between items-center">
-          <div className="text-white text-lg font-bold">{item.name}</div>
-          <div className="text-gray-300 text-lg font-bold">${item.price}</div>
+          <div className="text-white text-lg font-bold">{item.id}</div>
+          <div className="text-gray-300 text-lg font-bold">${item.default_price}</div>
         </div>
         {/* {(hovered || quantity > 0) && <div className="text-gray-300 mt-2">{item.description}</div>} */}
         <div

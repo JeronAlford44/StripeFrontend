@@ -20,16 +20,14 @@ export default function Checkout() {
           {Cart?.cartItems.map(item => {
             return (
               <div>
-                <div className='text-white'>{item.name}</div>
-                <div className='text-gray-600'>{item.price}</div>
-                <div className='text-white'>Quantity: {item.count}</div>
+                <div className="text-white">{item.id}</div>
+                <div className="text-gray-600">{item.default_price}</div>
+                <div className="text-white">Quantity: {item.metadata.count}</div>
               </div>
             )
           })}
         </div>
-        <div className='text-white'>
-          Total: {Cart?.cartTotal()}
-        </div>
+        <div className="text-white">Total: {Cart?.cartTotal()}</div>
       </section>
       <section className="flex flex-col items-center">
         <div className="p-8 w-96 bg-gray-300 rounded-lg shadow-lg">

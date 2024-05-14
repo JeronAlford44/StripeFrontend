@@ -1,14 +1,17 @@
-import React, { useState, createContext, useContext, useEffect } from 'react'
-import { Item } from "../Catalog/CatalogCard";
+import React, { useState, createContext, useContext, useEffect, SetStateAction } from 'react'
+import { Product } from '../Catalog/items';
+
 // Create a context for the cart
 
 interface CartContextProps{
-    cartItems: Item[];
-    addItemToCart: (item: Item) => void;
-    removeItemFromCart: (item: Item) => void;
+    cartItems: Product[];
+    addItemToCart: (item: Product) => void;
+    removeItemFromCart: (item: Product) => void;
     clearCart: () => void;
     cartTotal: () => number
     size: () => number
+    checkoutInitiated: boolean
+    setCheckoutInitiated: React.Dispatch<SetStateAction<boolean>>
 }
 const CartContext = createContext<CartContextProps|null>(null)
 
@@ -21,29 +24,30 @@ export function useCart() {
 export default function CartProvider(props: { children: React.ReactElement | any }) {
   // State to hold the cart items
   //need to build local storage spot on startup, upate storage as cart changes, update cart with storage items upon page reload
-  window.localStorage.setItem('cart',[])
-  const [cartItems, setCartItems] = useState<Item[]>([])
-  useEffect(() => {
-const updateLocalStorage = () => {
-window.localStorage.setItem('cart',cartItems)
 
-}
-updateLocalStorage()
-  },[cartItems])
+  const [cartItems, setCartItems] = useState<Product[]>([])
+  const [checkoutInitiated, setCheckoutInitiated] = useState<boolean>(false)
+//   useEffect(() => {
+// const updateLocalStorage = () => {
+// window.localStorage.setItem('cart',cartItems)
+
+// }
+// updateLocalStorage()
+//   },[cartItems])
   // Function to add an item to the cart
-  const addItemToCart = (item: Item) => {
+  const addItemToCart = (item: Product) => {
     let exists = false
 
     const updatedCartItems = cartItems.map(cartItem => {
-      if (cartItem.name === item.name) {
+      if (cartItem.id === item.id) {
         exists = true
-        return { ...cartItem, count: cartItem.count + 1 } // Increment the count if item exists
+        return { ...cartItem, metadata: {count: cartItem.metadata.count + 1} } // Increment the count if item exists
       }
       return cartItem
     })
 
     if (!exists) {
-      updatedCartItems.push({ ...item, count: 1 }) // Add the item with count 1 if it doesn't exist
+      updatedCartItems.push({ ...item, metadata:{count: 1} }) // Add the item with count 1 if it doesn't exist
     }
 
     setCartItems(updatedCartItems)
@@ -51,8 +55,8 @@ updateLocalStorage()
 
 
   // Function to remove an item from the cart
-  const removeItemFromCart = (item: Item) => {
-    const updatedCartItems = cartItems.filter(cartItem => cartItem.name !== item.name)
+  const removeItemFromCart = (item: Product) => {
+    const updatedCartItems = cartItems.filter(cartItem => cartItem.id !== item.id)
     setCartItems(updatedCartItems)
   }
 
@@ -67,7 +71,7 @@ updateLocalStorage()
   const cartTotal = () => {
     let total = 0.00
     cartItems.forEach(item =>{
-      total += Number(item.price) * item.count
+      total += Number(item.default_price) * item.metadata.count
     })
     return total
   } 
@@ -80,6 +84,8 @@ updateLocalStorage()
     clearCart,
     cartTotal,
     size,
+    checkoutInitiated,
+    setCheckoutInitiated
   }
   
 
