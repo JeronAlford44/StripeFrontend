@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useCart } from '../Providers/CartProvider'
+import { useCart } from '../GlobalProviders/CartProvider'
 
 export default function Checkout() {
   const Cart = useCart()

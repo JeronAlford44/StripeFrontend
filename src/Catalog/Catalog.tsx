@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import items from './items'
-import CatalogCard from './CatalogCard'
+import CatalogCard from './Components/CatalogCard'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 
 import { useNavigate } from 'react-router-dom'
-import { useCart } from '../Providers/CartProvider'
+import { useCart } from '../GlobalProviders/CartProvider'
 
 export default function Catalog() {
-    const Cart = useCart()
+  const Cart = useCart()
   const navigate = useNavigate()
-
 
   return (
     <section className="flex flex-col gap-4">
@@ -23,9 +22,12 @@ export default function Catalog() {
             style={{ width: '48px', height: '48px' }}
           />
           <div className="text-white">{Cart?.size()}</div>
-          <button onClick={() => {
-            navigate('/cart')
-          }}className="px-2 bg-gray-400 rounded-lg">
+          <button
+            onClick={() => {
+              navigate('/cart')
+            }}
+            className="px-2 bg-gray-400 rounded-lg"
+          >
             <span className="text-white text-lg font-bold">View Cart</span>
           </button>
         </div>

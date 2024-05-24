@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import CheckoutForm from './CheckoutForm'
 import { useEffect, useState } from 'react'
 import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js'
-import { useCart } from '../Providers/CartProvider'
+import { useCart } from '../GlobalProviders/CartProvider'
 import { Product } from '../Catalog/items'
 
 export const stripePromise = loadStripe(
@@ -22,8 +22,8 @@ export default function NewCheckoutForm() {
 
   const [clientSecret, setClientSecret] = useState<string>('')
   useEffect(() => {
-    if (!cart?.checkoutInitiated){
-        return
+    if (!cart?.checkoutInitiated) {
+      return
     }
     const GetClientSecret = async () => {
       const requestBody: PaymentIntentRequestBody = {
@@ -58,11 +58,11 @@ export default function NewCheckoutForm() {
   } as StripeElementsOptions
   return (
     <section>
-        {clientSecret &&
-      <Elements stripe={stripePromise} options={options}>
-        <CheckoutForm />
-      </Elements>
-}
+      {clientSecret && (
+        <Elements stripe={stripePromise} options={options}>
+          <CheckoutForm />
+        </Elements>
+      )}
     </section>
   )
 }

@@ -1,5 +1,7 @@
 export type Price = {
-    
+    id: string
+    active: boolean
+    currency: string
 }
 
 export type Product = {
@@ -13,7 +15,11 @@ export type Product = {
 
 }
 
-
+const basePriceObject: Price = {
+    id : '',
+    active: true,
+    currency: "usd"
+} 
 const items: Product[] = [
     {
         id: 'Computer',

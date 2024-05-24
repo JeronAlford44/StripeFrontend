@@ -12,6 +12,7 @@ interface CartContextProps{
     size: () => number
     checkoutInitiated: boolean
     setCheckoutInitiated: React.Dispatch<SetStateAction<boolean>>
+    isEmpty: () => boolean
 }
 const CartContext = createContext<CartContextProps|null>(null)
 
@@ -22,32 +23,23 @@ export function useCart() {
 
 // CartProvider component
 export default function CartProvider(props: { children: React.ReactElement | any }) {
-  // State to hold the cart items
-  //need to build local storage spot on startup, upate storage as cart changes, update cart with storage items upon page reload
-
+  
   const [cartItems, setCartItems] = useState<Product[]>([])
   const [checkoutInitiated, setCheckoutInitiated] = useState<boolean>(false)
-//   useEffect(() => {
-// const updateLocalStorage = () => {
-// window.localStorage.setItem('cart',cartItems)
 
-// }
-// updateLocalStorage()
-//   },[cartItems])
-  // Function to add an item to the cart
   const addItemToCart = (item: Product) => {
     let exists = false
 
     const updatedCartItems = cartItems.map(cartItem => {
       if (cartItem.id === item.id) {
         exists = true
-        return { ...cartItem, metadata: {count: cartItem.metadata.count + 1} } // Increment the count if item exists
+        return { ...cartItem, metadata: {count: cartItem.metadata.count + 1} }
       }
       return cartItem
     })
 
     if (!exists) {
-      updatedCartItems.push({ ...item, metadata:{count: 1} }) // Add the item with count 1 if it doesn't exist
+      updatedCartItems.push({ ...item, metadata:{count: 1} }) 
     }
 
     setCartItems(updatedCartItems)
@@ -73,10 +65,13 @@ export default function CartProvider(props: { children: React.ReactElement | any
     cartItems.forEach(item =>{
       total += Number(item.default_price) * item.metadata.count
     })
-    return total
+    return Number(total.toFixed(2))
   } 
+  const isEmpty = () => {
+    return cartItems.length === 0
+  }
 
-  // Value to be provided by the context
+
   const cartContextValue: CartContextProps = {
     cartItems,
     addItemToCart,
@@ -85,7 +80,8 @@ export default function CartProvider(props: { children: React.ReactElement | any
     cartTotal,
     size,
     checkoutInitiated,
-    setCheckoutInitiated
+    setCheckoutInitiated,
+    isEmpty
   }
   
 
