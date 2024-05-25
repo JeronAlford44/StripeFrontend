@@ -11,7 +11,7 @@ export default function TotalSection() {
         return
     }
     const requestBody = {
-        lineItems: Cart.cartItems.map(item => {return({priceId:item.id,quantity: item.metadata.count})})
+        lineItems: Cart.cartItems.map(item => {return({itemName:item.id,quantity: item.metadata.count, cost: item.default_price})})
     }
     const getCheckoutURL = async() => {
          const req = await fetch('http://localhost:8080/checkout/session', {
@@ -20,6 +20,9 @@ export default function TotalSection() {
            headers: { 'Content-Type': 'application/json' },
          })
          const response: any = await req.json()
+         const sessionUrl = response.sessionUrl
+       
+         window.open(sessionUrl, '_blank')
          console.log(response)
         
 

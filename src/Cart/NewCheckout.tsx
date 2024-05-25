@@ -33,7 +33,7 @@ export default function NewCheckoutForm() {
       }
       try {
         console.log(requestBody)
-        const req = await fetch('http://localhost:8080/checkout/payment_intent', {
+        const req = await fetch('https://localhost:8080/checkout/payment_intent', {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: { 'Content-Type': 'application/json' },
