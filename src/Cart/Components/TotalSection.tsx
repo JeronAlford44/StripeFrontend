@@ -1,45 +1,24 @@
 import React, { useEffect } from 'react'
-import { useCart } from '../../GlobalProviders/CartProvider'
+import { useCart } from '../../Providers/CartProvider'
 import { useNavigate } from 'react-router-dom'
+import { OpenStripeCheckoutSessionUrl } from '../../stripe-api/CheckoutUrl'
 
 export default function TotalSection() {
-
   const Cart = useCart()
-  const navigate = useNavigate()
-  useEffect(() =>{
-    if (!Cart?.checkoutInitiated){
-        return
-    }
-    const requestBody = {
-        lineItems: Cart.cartItems.map(item => {return({itemName:item.id,quantity: item.metadata.count, cost: item.default_price})})
-    }
-    const getCheckoutURL = async() => {
-         const req = await fetch('http://localhost:8080/checkout/session', {
-           method: 'POST',
-           body: JSON.stringify(requestBody),
-           headers: { 'Content-Type': 'application/json' },
-         })
-         const response: any = await req.json()
-         const sessionUrl = response.sessionUrl
-       
-         window.open(sessionUrl, '_blank')
-         console.log(response)
-        
 
-    }
-    getCheckoutURL()
-
-
-  },[Cart?.checkoutInitiated])
-  // Calculate total price
-  if (!Cart) {
-    return <div></div>
-  }
+  
 
   const handlePay = () => {
-    // Implement payment functionality here
-    Cart?.setCheckoutInitiated(true)
-    // navigate('/test') // Redirect to checkout page after payment
+    const requestBody = {
+      lineItems: Cart?.cartItems.map(item => {
+        return {
+          itemName: item.id,
+          quantity: item.metadata.count,
+          cost: item.default_price,
+        }
+      }),
+    }
+    OpenStripeCheckoutSessionUrl(requestBody)
   }
 
   return (
@@ -60,7 +39,7 @@ export default function TotalSection() {
         </div>
         <div className="text-xl text-white font-bold grid grid-cols-2 text-left ">
           <p>Total</p>
-          <p>${Cart.cartTotal()}</p>
+          <p>${Cart?.cartTotal()}</p>
         </div>
         <button
           onClick={handlePay}

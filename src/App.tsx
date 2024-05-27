@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import logo from './logo.svg'
+import React from 'react'
 import './App.css'
 import Catalog from './Catalog/Catalog'
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom'
 
-import CartProvider from './GlobalProviders/CartProvider'
-import Checkout from './Cart/Checkout'
+import CartProvider from './Providers/CartProvider'
 
-import { Elements } from '@stripe/react-stripe-js'
-
-import CheckoutForm from './Cart/CheckoutForm'
-import { loadStripe } from '@stripe/stripe-js'
-import newPaymentIntent from './stripe/PaymentIntent'
-import NewCheckoutForm from './Cart/NewCheckout'
 import CartPage from './Cart/Cart'
-
-
 
 function App() {
   return (
@@ -26,9 +16,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Catalog />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<Checkout />} />
-
-              <Route path="/test" element={null} />
             </Routes>
           </CartProvider>
         </Router>

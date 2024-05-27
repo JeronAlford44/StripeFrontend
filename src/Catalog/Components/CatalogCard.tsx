@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 
-import { useCart } from '../../GlobalProviders/CartProvider'
+import { useCart } from '../../Providers/CartProvider'
 import { Product } from '../items'
 
 export default function CatalogCard({ item }: { item: Product }) {

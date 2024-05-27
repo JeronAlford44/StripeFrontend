@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect, SetStateAction } from 'react'
+import React, { useState, createContext, useContext,SetStateAction } from 'react'
 import { Product } from '../Catalog/items';
 
 // Create a context for the cart

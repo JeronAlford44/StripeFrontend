@@ -4,7 +4,7 @@ import CatalogCard from './Components/CatalogCard'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 
 import { useNavigate } from 'react-router-dom'
-import { useCart } from '../GlobalProviders/CartProvider'
+import { useCart } from '../Providers/CartProvider'
 
 export default function Catalog() {
   const Cart = useCart()
